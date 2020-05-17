@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>W02: Example 05_0</title>
+  </head>
+  <body>
+    <p id = "target"></p>
+    <script>
+      function Myfunc()
+      {
+	  var text = 0 ;
+	  
+	  var i = 1;
+	  while( i < 5 )
+	  {
+	      text += "The number is " + i + "<br>";
+	      i++;
+	  }
+	  document.getElementById("target").innerHTML = text;
+      }
+      Myfunc();
+      </script>
+  </body>
+  </html>
