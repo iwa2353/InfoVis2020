@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>W02: Task 3</title>
+  </head>
+  <body>
+    <script src = "vec3.js"></script>
+    <script>
+      var v0 = new Vec3(1,9,2);
+      var v1 = new Vec3(5,4,8);
+      var v2 = new Vec3(2,6,4);
+      show(v0);
+      show(v1);
+      show(v2);
+      
+     
+      var S = AreaOfTriangle(v0,v1,v2);
+   
+      document.write("The area of triangle is "+S);
+
+      
+      function show(v){
+	  document.write("("+v.x+","+v.y+","+v.z+")"+"<br/>");
+      }
+      
+      function AreaOfTriangle(v0,v1,v2){
+	 
+	  v0v1 = v1.sub(v0);
+	  v0v2 = v2.sub(v0);
+	  document.write("The area of triangle is <br/>");
+	  var w = v0v1.cross(v0v2);
+	  var S = w.length()/2;//外積の大きさ
+	  return S;
+      }
+     
+      </script>
+  </body>
