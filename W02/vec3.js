@@ -14,7 +14,13 @@ class Vec3
 	this.z += v.z;
 	return this;
     }
-    
+    sub(v) {
+	this.x -= v.x;
+	this.y -= v.y;
+	this.z -= v.z;
+	return this;
+    }
+   
     sum(){
 	this.x + this.y + this.z;
 	return this;
@@ -45,6 +51,20 @@ class Vec3
     
     mid(){
 	return (this.x!=this.min())&&(this.x!=this.max())?this.x:(this.y!=this.min())&&(this.y!=this.max())?this.y:this.z//見にくい
+    }
+
+    cross(v){
+	var x = this.x;
+	var y = this.y;
+	var z = this.z;
+    	this.x = x*v.z-z*v.y;
+	this.y = z*v.x-x*v.z;
+	this.z = x*v.y-y*v.x;
+	return this;
+    }
+    
+    length(){
+	return Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
     }
 }
 
