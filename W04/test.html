@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <title>W02: Example 01</title>
+  <head>
+    <body>
+      <script>
+	var vertices = [       //使用する点を8つ定義
+        [  1,  1,  1 ], // v0
+        [  1, -1,  1 ], // v1
+        [  1, -1, -1 ], // v2
+	[  1,  1, -1 ], // v3
+	[ -1,  1,  1 ], // v4
+        [ -1, -1,  1 ], // v5
+        [ -1, -1, -1 ], // v6
+	[ -1,  1, -1 ]  // v7
+	];
+
+	var f=[];
+	f[0]=1;
+	f[1]=2;
+	var id = vertices[0];
+	var size = vertices.length;
+	document.write(size);
+	document.write(vertices[0][0]);
+	document.write(id[0]);
+	  var faces =  [ //このままだと var id = faces[0] の配列の代入で問題あり？
+        [ 0, 1, 2 ]// f0
+	[ 0, 2, 3 ]// f1
+	  ];
+	 var id = faces[0];
+	document.write("Hello World!");
+      </script>
+    </body>
+    </html>

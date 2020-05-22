@@ -1,0 +1,175 @@
+function main()
+{
+    var width = 500;
+    var height = 500;
+
+    var scene = new THREE.Scene();
+
+    var fov = 45;
+    var aspect = width / height;
+    var near = 1;
+    var far = 1000;
+    var camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
+    camera.position.set( 0, 0, 5 );
+    scene.add( camera );
+
+    var light1 = new THREE.PointLight();
+    light1.position.set( 5, 5, 5 );
+    scene.add( light1 );
+     var light2 = new THREE.PointLight();
+    light2.position.set(-5,-5,-5 );
+    scene.add( light2 );
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize( width, height );
+    document.body.appendChild( renderer.domElement );
+
+    const vertices = [       //使用する点を8つ定義
+        [  1,  1,  1 ], // v0
+        [  1, -1,  1 ], // v1
+        [  1, -1, -1 ], // v2
+	[  1,  1, -1 ], // v3
+	[ -1,  1,  1 ], // v4
+        [ -1, -1,  1 ], // v5
+        [ -1, -1, -1 ], // v6
+	[ -1,  1, -1 ]  // v7
+    ];
+
+
+    const faces =  [ //このままだと var id = faces[0] の配列の代入で問題あり？ "," が抜けてた
+        [ 0, 1, 3 ],// f0
+	[ 0, 4, 1 ],// f1
+	[ 0, 3, 4 ],// f2
+	[ 2, 3, 1 ],// f3
+	[ 2, 1, 6 ],// f4
+	[ 2, 6, 3 ],// f5
+	[ 5, 1, 4 ],// f6
+	[ 5, 6, 1 ],// f7
+	[ 5, 4, 6 ],// f8
+	[ 7, 4, 3 ],// f9
+	[ 7, 3, 6 ],// f10
+	[ 7, 6, 4 ] // f11
+	];
+    
+
+    var v0 = new THREE.Vector3().fromArray( vertices[0] );
+    var v1 = new THREE.Vector3().fromArray( vertices[1] );
+    var v2 = new THREE.Vector3().fromArray( vertices[2] );
+    var v3 = new THREE.Vector3().fromArray( vertices[3] ); //以下追加
+    var v4 = new THREE.Vector3().fromArray( vertices[4] );
+    var v5 = new THREE.Vector3().fromArray( vertices[5] );
+    var v6 = new THREE.Vector3().fromArray( vertices[6] );
+    var v7 = new THREE.Vector3().fromArray( vertices[7] );
+    
+   /* var id = faces[0];//faces を引数として関数で返せるようにしたいけど今回は地道に書いてみる 否関数化してみる
+    var f0 = new THREE.Face3( id[0], id[1], id[2] );
+    id = faces[1];
+    var f1 = new THREE.Face3( id[0], id[1], id[2] );
+*/
+   var f = makeFaces(faces) ;
+    
+
+    var geometry = new THREE.Geometry();
+    geometry.vertices.push( v0 );
+    geometry.vertices.push( v1 );
+    geometry.vertices.push( v2 );
+    geometry.vertices.push( v3 );
+    geometry.vertices.push( v4 );
+    geometry.vertices.push( v5 );
+    geometry.vertices.push( v6 );
+    geometry.vertices.push( v7 );
+    
+    geometry.faces.push( f[0] ); 
+    geometry.faces.push( f[1] );
+    geometry.faces.push( f[2] );
+    geometry.faces.push( f[3] );
+    geometry.faces.push( f[4] );
+    geometry.faces.push( f[5] );
+    geometry.faces.push( f[6] );
+    geometry.faces.push( f[7] );
+    geometry.faces.push( f[8] );
+    geometry.faces.push( f[9] );
+    geometry.faces.push( f[10] );
+    geometry.faces.push( f[11] );
+
+
+    //    var material = new THREE.MeshBasicMaterial();
+    var material = new THREE.MeshLambertMaterial();
+    material.vertexColors = THREE.FaceColors;
+    geometry.faces[0].color = new THREE.Color( 1, 0, 0 );
+    geometry.faces[1].color = new THREE.Color( 1, 0, 0 );
+    geometry.faces[2].color = new THREE.Color( 1, 0, 0 );
+    geometry.faces[3].color = new THREE.Color( 1, 0, 0 );
+    geometry.faces[4].color = new THREE.Color( 1, 0, 0 );
+    geometry.faces[5].color = new THREE.Color( 1, 0, 0 );
+    geometry.faces[6].color = new THREE.Color( 1, 0, 0 );
+    geometry.faces[7].color = new THREE.Color( 1, 0, 0 );
+    geometry.faces[8].color = new THREE.Color( 1, 0, 0 );
+    geometry.faces[9].color = new THREE.Color( 1, 0, 0 );
+    geometry.faces[10].color = new THREE.Color( 1, 0, 0 );
+    geometry.faces[11].color = new THREE.Color( 1, 0, 0 );
+
+    geometry.computeFaceNormals();
+    material.side = THREE.DoubleSide;//変更FrontSide->DoubleSide
+
+    var triangle = new THREE.Mesh( geometry, material );
+    scene.add( triangle );
+/*
+    document.addEventListener( 'mousedown', mouse_down_event );
+    function mouse_down_event( event )
+    {
+        // Clicked point in window coordinates.
+        // Origin of window coordinates: top-left
+        var x_win = event.clientX;
+        var y_win = event.clientY;
+
+        // Viewport
+        var vx = renderer.domElement.offsetLeft;
+        var vy = renderer.domElement.offsetTop;
+        var vw = renderer.domElement.width;
+        var vh = renderer.domElement.height;
+
+        // Window coordinates to normalized device coordinates
+        // Origin of NDC: center
+        var x_NDC = 2 * ( x_win - vx ) / vw - 1;
+        var y_NDC = -( 2 * ( y_win - vy ) / vh - 1 );
+
+        // Normalized device coordinates to world coordinates
+        var p_NDC = new THREE.Vector3( x_NDC, y_NDC, 1 );
+        var p_wld = p_NDC.unproject( camera );
+
+        var origin = camera.position;
+        var direction = p_wld.sub( camera.position ).normalize();
+        var raycaster = new THREE.Raycaster( origin, direction );
+        var intersects = raycaster.intersectObject( cube );
+        if ( intersects.length > 0 )
+        {
+            intersects[0].face.color.setRGB( 1, 0, 0 );
+            intersects[0].object.geometry.colorsNeedUpdate = true;
+        }
+    }
+*/
+    loop();
+
+    function loop()
+    {
+        requestAnimationFrame( loop );
+        triangle.rotation.x += 0.01;
+        triangle.rotation.y += 0.005;
+	triangle.rotation.z += 0.05;
+        renderer.render( scene, camera );
+    }
+    
+    function makeFaces(faces)
+    {	
+	let length = faces.length	
+	var f = Array(length);
+	for(let i = 0; i < length;i++){
+	    id = faces[i];
+	    f[i] = new THREE.Face3( id[0], id[1], id[2] );
+	}
+	return f;
+    }
+
+    
+}
