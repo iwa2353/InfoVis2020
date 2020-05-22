@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>W02: Example 01</title>
+  <head>
+    <body>
+      <script>
+	var vertices = [       //使用する点を8つ定義
+        [  1,  1,  1 ], // v0
+        [  1, -1,  1 ], // v1
+        [  1, -1, -1 ], // v2
+	[  1,  1, -1 ], // v3
+	[ -1,  1,  1 ], // v4
+        [ -1, -1,  1 ], // v5
+        [ -1, -1, -1 ], // v6
+	[ -1,  1, -1 ]  // v7
+    ];
+	document.write("Hello World!");
+      </script>
+    </body>
+    </html>
